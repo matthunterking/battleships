@@ -19,25 +19,39 @@
  background-position: 0% 100%;
 }
 
-.right {
- background-color: green;
-}
 .left {
- background-color: yellow;
+ transform: rotate(180deg);
 }
+
 .up {
- background-color: orange;
+ transform: rotate(90deg);
 }
+
 .down {
- background-color:purple;
+ transform: rotate(270deg);
 }
-.middle {
- background-color: pink;
+
+.right::after, .left::after, .up::after, .down::after {
+ content: '';
+ border-top: 15px solid transparent;
+ border-bottom: 15px solid transparent;
+ border-right: 30px solid #182b32;
+ position: absolute;
 }
-.circle {
- background-color: lime;
+
+.middle::after, .circle::after {
+ content: '';
+ background-color: #182b32;
+ width: 80%;
+ height: 80%;
+ margin: 10%;
+}
+
+.circle::after {
+ border-radius: 100%;
 }
 
 .flag {
- background-color: palevioletred;
+ background-image: url('./flag.jpeg');
+ background-size: cover;
 }
