@@ -1,28 +1,29 @@
 const solution = {
-  0: [0, 1, 1, 0, 0, 0, 0, 0, 0, 0],
-  1: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-  2: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-  3: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-  4: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-  5: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-  6: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-  7: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-  8: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-  9: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  0: ['sea', 'right', 'left', 'sea', 'sea', 'sea', 'sea', 'sea', 'sea', 'sea'],
+  1: ['sea', 'sea', 'sea', 'sea', 'sea', 'sea', 'sea', 'sea', 'sea', 'sea'],
+  2: ['sea', 'sea', 'sea', 'sea', 'sea', 'sea', 'sea', 'sea', 'sea', 'sea'],
+  3: ['sea', 'sea', 'sea', 'sea', 'sea', 'sea', 'sea', 'sea', 'sea', 'sea'],
+  4: ['sea', 'sea', 'sea', 'sea', 'sea', 'sea', 'sea', 'sea', 'sea', 'sea'],
+  5: ['sea', 'sea', 'sea', 'sea', 'sea', 'sea', 'sea', 'sea', 'sea', 'sea'],
+  6: ['sea', 'sea', 'sea', 'sea', 'sea', 'sea', 'sea', 'sea', 'sea', 'sea'],
+  7: ['sea', 'sea', 'sea', 'sea', 'sea', 'sea', 'sea', 'sea', 'sea', 'sea'],
+  8: ['sea', 'sea', 'sea', 'sea', 'sea', 'sea', 'sea', 'sea', 'sea', 'sea'],
+  9: ['sea', 'sea', 'sea', 'sea', 'sea', 'sea', 'sea', 'sea', 'sea', 'sea']
 };
 
+const squareOptions = ['sea', 'right', 'left', 'up', 'down', 'middle', 'circle', 'flag'];
 
-let playerMoves = {
-  0: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-  1: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-  2: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-  3: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-  4: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-  5: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-  6: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-  7: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-  8: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-  9: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+const playerMoves = {
+  0: [null, null, null, null, null, null, null, null, null, null],
+  1: [null, null, null, null, null, null, null, null, null, null],
+  2: [null, null, null, null, null, null, null, null, null, null],
+  3: [null, null, null, null, null, null, null, null, null, null],
+  4: [null, null, null, null, null, null, null, null, null, null],
+  5: [null, null, null, null, null, null, null, null, null, null],
+  6: [null, null, null, null, null, null, null, null, null, null],
+  7: [null, null, null, null, null, null, null, null, null, null],
+  8: [null, null, null, null, null, null, null, null, null, null],
+  9: [null, null, null, null, null, null, null, null, null, null]
 };
 
 console.log('playerMoves', playerMoves);
@@ -32,21 +33,21 @@ console.log('solution', solution);
 const $grid = document.querySelector('.grid');
 
 const clickSquare = ($target, rowNumber, columnNumber) => {
+  const previousSquareValue = playerMoves[rowNumber][columnNumber];
+  const nextOptionIndex = previousSquareValue ? squareOptions.indexOf(previousSquareValue) + 1 : 0;
+  const newSquareValue = nextOptionIndex === squareOptions.length ? squareOptions[0] : squareOptions[nextOptionIndex];
 
   playerMoves[rowNumber] = playerMoves[rowNumber].map((value, index) => {
     if (index === columnNumber) {
-      return value === 0 ? 1 : 0;
+      return newSquareValue;
     }
     return value;
   });
 
-  if (playerMoves[rowNumber][columnNumber] === 1) {
-    $target.classList.remove('ship');
-    $target.classList.add('sea');
-  } else {
-    $target.classList.remove('sea');
-    $target.classList.add('ship');
-  }
+  console.log(playerMoves);
+
+  $target.classList.remove(previousSquareValue);
+  $target.classList.add(newSquareValue);
 
 };
 
@@ -60,7 +61,7 @@ const setUpGrid = () => {
     });
 
     const rowTotal = row.reduce((total, squareValue) => {
-      if (squareValue === 1) total++;
+      if (squareValue !== 'sea') total++;
       return total;
     }, 0);
 
@@ -73,7 +74,10 @@ const setUpGrid = () => {
 
   const bottomRow = new Array(10).fill('').map((x, index) => {
     return Object.values(solution).reduce((total, arrayOfValues) => {
-      return total + arrayOfValues[index];
+      if (arrayOfValues[index] !== 'sea') {
+        total++;
+      }
+      return total;
     }, 0);
   });
 
@@ -96,10 +100,10 @@ const checkAnswer = () => {
         matches = true;
       }
       return matches;
-    }, false)
+    }, false);
   });
-  if (win) console.log('winnner!!!!')
-}
+  if (win) console.log('winnner!!!!');
+};
 
 setUpGrid();
 

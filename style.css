@@ -14,9 +14,30 @@
 }
 
 .sea {
- background-color: aqua;
+ background-image: url('./sea.gif');
+ background-size: 160%;
+ background-position: 0% 100%;
 }
 
-.ship {
- background-color: crimson;
+.right {
+ background-color: green;
+}
+.left {
+ background-color: yellow;
+}
+.up {
+ background-color: orange;
+}
+.down {
+ background-color:purple;
+}
+.middle {
+ background-color: pink;
+}
+.circle {
+ background-color: lime;
+}
+
+.flag {
+ background-color: palevioletred;
 }
