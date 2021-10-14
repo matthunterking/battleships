@@ -1,0 +1,22 @@
+.grid {
+ border: 1px solid black;
+ width: 600px;
+ height: 600px;
+ grid-template-columns: repeat(11, 1fr);
+ display: grid;
+}
+
+.square {
+ border: 1px solid black;
+ display: flex;
+ justify-content: center;
+ align-items: center;
+}
+
+.sea {
+ background-color: aqua;
+}
+
+.ship {
+ background-color: crimson;
+}
