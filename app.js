@@ -11,6 +11,7 @@ const solution = {
   9: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 };
 
+
 let playerMoves = {
   0: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
   1: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -38,8 +39,6 @@ const clickSquare = ($target, rowNumber, columnNumber) => {
     }
     return value;
   });
-
-  console.log('===>', playerMoves[rowNumber][columnNumber] === 1)
 
   if (playerMoves[rowNumber][columnNumber] === 1) {
     $target.classList.remove('ship');
@@ -86,7 +85,21 @@ const setUpGrid = () => {
     $grid.append($square);
   });
 
+  document.querySelector('button').addEventListener('click', checkAnswer);
+
 };
+
+const checkAnswer = () => {
+  const win = Object.values(playerMoves).every((row, rowIndex) => {
+    return row.reduce((matches, value, columnIndex) => {
+      if (value === solution[rowIndex][columnIndex]) {
+        matches = true;
+      }
+      return matches;
+    }, false)
+  });
+  if (win) console.log('winnner!!!!')
+}
 
 setUpGrid();
 
