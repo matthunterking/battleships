@@ -1,67 +1,57 @@
-const solution = {
-  0: ['sea', 'right', 'left', 'sea', 'sea', 'sea', 'sea', 'sea', 'sea', 'sea'],
-  1: ['sea', 'sea', 'sea', 'sea', 'sea', 'sea', 'sea', 'sea', 'sea', 'sea'],
-  2: ['sea', 'sea', 'sea', 'sea', 'sea', 'sea', 'sea', 'sea', 'sea', 'sea'],
-  3: ['sea', 'sea', 'sea', 'sea', 'sea', 'sea', 'sea', 'sea', 'sea', 'sea'],
-  4: ['sea', 'sea', 'sea', 'sea', 'sea', 'sea', 'sea', 'sea', 'sea', 'sea'],
-  5: ['sea', 'sea', 'sea', 'sea', 'sea', 'sea', 'sea', 'sea', 'sea', 'sea'],
-  6: ['sea', 'sea', 'sea', 'sea', 'sea', 'sea', 'sea', 'sea', 'sea', 'sea'],
-  7: ['sea', 'sea', 'sea', 'sea', 'sea', 'sea', 'sea', 'sea', 'sea', 'sea'],
-  8: ['sea', 'sea', 'sea', 'sea', 'sea', 'sea', 'sea', 'sea', 'sea', 'sea'],
-  9: ['sea', 'sea', 'sea', 'sea', 'sea', 'sea', 'sea', 'sea', 'sea', 'sea']
+const gameBoard = {
+  0: [{ value: 'sea', visable: false }, { value: 'right', visable: true, playerMove: 'right' }, { value: 'left', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'circle', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'up', visable: false }, { value: 'sea', visable: false }],
+  1: [{ value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'middle', visable: false }, { value: 'sea', visable: false }],
+  2: [{ value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'middle', visable: false }, { value: 'sea', visable: false }],
+  3: [{ value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'down', visable: false }, { value: 'sea', visable: false }],
+  4: [{ value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }],
+  5: [{ value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }],
+  6: [{ value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }],
+  7: [{ value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }],
+  8: [{ value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }],
+  9: [{ value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }]
 };
 
 const squareOptions = ['sea', 'right', 'left', 'up', 'down', 'middle', 'circle', 'flag'];
 
-const playerMoves = {
-  0: [null, null, null, null, null, null, null, null, null, null],
-  1: [null, null, null, null, null, null, null, null, null, null],
-  2: [null, null, null, null, null, null, null, null, null, null],
-  3: [null, null, null, null, null, null, null, null, null, null],
-  4: [null, null, null, null, null, null, null, null, null, null],
-  5: [null, null, null, null, null, null, null, null, null, null],
-  6: [null, null, null, null, null, null, null, null, null, null],
-  7: [null, null, null, null, null, null, null, null, null, null],
-  8: [null, null, null, null, null, null, null, null, null, null],
-  9: [null, null, null, null, null, null, null, null, null, null]
-};
-
-console.log('playerMoves', playerMoves);
-console.log('solution', solution);
+console.log('gameBoard', gameBoard);
 
 
 const $grid = document.querySelector('.grid');
 
 const clickSquare = ($target, rowNumber, columnNumber) => {
-  const previousSquareValue = playerMoves[rowNumber][columnNumber];
+  const previousSquareValue = gameBoard[rowNumber][columnNumber].playerMove;
   const nextOptionIndex = previousSquareValue ? squareOptions.indexOf(previousSquareValue) + 1 : 0;
   const newSquareValue = nextOptionIndex === squareOptions.length ? squareOptions[0] : squareOptions[nextOptionIndex];
 
-  playerMoves[rowNumber] = playerMoves[rowNumber].map((value, index) => {
+  gameBoard[rowNumber] = gameBoard[rowNumber].map((square, index) => {
     if (index === columnNumber) {
-      return newSquareValue;
+      return { ...square, playerMove: newSquareValue };
     }
-    return value;
+    return square;
   });
 
-  console.log(playerMoves);
-
+  console.log(gameBoard);
   $target.classList.remove(previousSquareValue);
   $target.classList.add(newSquareValue);
 
 };
 
 const setUpGrid = () => {
-  Object.values(solution).forEach((row, rowNumber) => {
+  Object.values(gameBoard).forEach((row, rowNumber) => {
     row.forEach((square, columnNumber) => {
       const $square = document.createElement('div');
+      $square.setAttribute('id', `${rowNumber}, ${columnNumber}`);
       $square.classList.add('square');
-      $square.addEventListener('click', ({ target }) => clickSquare(target, rowNumber, columnNumber));
+      if (square.visable) {
+        $square.classList.add(square.value);
+      } else {
+        $square.addEventListener('click', ({ target }) => clickSquare(target, rowNumber, columnNumber));
+      }
       $grid.append($square);
     });
 
-    const rowTotal = row.reduce((total, squareValue) => {
-      if (squareValue !== 'sea') total++;
+    const rowTotal = row.reduce((total, square) => {
+      if (square.value !== 'sea') total++;
       return total;
     }, 0);
 
@@ -73,8 +63,8 @@ const setUpGrid = () => {
   });
 
   const bottomRow = new Array(10).fill('').map((x, index) => {
-    return Object.values(solution).reduce((total, arrayOfValues) => {
-      if (arrayOfValues[index] !== 'sea') {
+    return Object.values(gameBoard).reduce((total, arrayOfValues) => {
+      if (arrayOfValues[index].value !== 'sea') {
         total++;
       }
       return total;
@@ -94,15 +84,27 @@ const setUpGrid = () => {
 };
 
 const checkAnswer = () => {
-  const win = Object.values(playerMoves).every((row, rowIndex) => {
-    return row.reduce((matches, value, columnIndex) => {
-      if (value === solution[rowIndex][columnIndex]) {
-        matches = true;
-      }
-      return matches;
-    }, false);
+
+  const win = Object.values(gameBoard).every((row) => {
+    return row.every(square => {
+      const noPlayerAnswerButSeaSquare = square.value === 'sea' && !square.playerMove;
+      const correct = square.value === square.playerMove;
+      return noPlayerAnswerButSeaSquare || correct;
+    });
   });
-  if (win) console.log('winnner!!!!');
+
+  if (win) {
+    Object.keys(gameBoard).forEach(rowNumber => {
+      gameBoard[rowNumber] = gameBoard[rowNumber].map((square, columnNumber) => {
+        if (!square.playerMove) {
+          document.getElementById(`${rowNumber}, ${columnNumber}`).classList.add('sea');
+          return { ...square, playerMove: 'sea' };
+        }
+        return square;
+      });
+    });
+    document.querySelector('.winnerMessage').classList.remove('hidden');
+  }
 };
 
 setUpGrid();

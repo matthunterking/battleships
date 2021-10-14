@@ -42,9 +42,9 @@
 .middle::after, .circle::after {
  content: '';
  background-color: #182b32;
- width: 80%;
- height: 80%;
- margin: 10%;
+ width: 30px;
+ height: 30px;
+ position: absolute;
 }
 
 .circle::after {
@@ -54,4 +54,25 @@
 .flag {
  background-image: url('./flag.jpeg');
  background-size: cover;
+}
+
+.winnerMessage {
+ position: absolute;
+ left: 0;
+ top: 0;
+ right: 0;
+ bottom: 0;
+ background-color: rgba(0, 0, 0, 0.4);
+ padding: 25%;
+}
+
+.innerWinnerMessage {
+ background-color: white;
+ display: flex;
+ justify-content: center;
+ align-items: center;
+}
+
+.hidden {
+ display: none;
 }
