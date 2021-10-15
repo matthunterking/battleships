@@ -19,7 +19,7 @@ const squareOptions = ['sea', 'right', 'left', 'up', 'down', 'middle', 'circle',
 const $grid = document.querySelector('.grid');
 
 const ships = [
-  ['end', 'middle', 'middle', 'end'],
+  ['end', 'middle1', 'middle2', 'end'],
   ['end', 'middle', 'end'],
   ['end', 'middle', 'end'],
   ['end', 'end'],
@@ -32,10 +32,11 @@ const ships = [
 ];
 
 const generateShipsToBePlaced = () => {
+  let isVertical = false;
   return ships.map(shipMakeUp => {
     if (shipMakeUp.length > 1) {
-      const isVertical = Math.random() > 0.5 && shipMakeUp.length > 1;
-      const ship = shipMakeUp.map((shipPart, index) => {
+      isVertical = Math.random() > 0.5 && shipMakeUp.length > 1;
+      shipMakeUp = shipMakeUp.map((shipPart, index) => {
         if (shipPart === 'end') {
           if (index === 0) {
             return isVertical ? 'up' : 'left';
@@ -45,10 +46,12 @@ const generateShipsToBePlaced = () => {
         }
         return shipPart;
       });
-      return { isVertical, ship };
     }
-
-    return { isVertical: false, ship: shipMakeUp };
+    let visablePart = null;
+    if (Math.random() > 0.3) {
+      visablePart = shipMakeUp[Math.floor(Math.random() * shipMakeUp.length)];
+    }
+    return { isVertical, ship: shipMakeUp, visablePart };
   });
 };
 
@@ -61,7 +64,7 @@ const getStartPointRange = ({ isVertical, ship }) => {
 
 const generateRandomPoint = (maximum) => {
   return Math.floor(Math.random() * (maximum - 0 + 1) + 0);
-}
+};
 
 const getSquareFootprint = (horizonalCoordinate, verticalCoordinate) => {
   const coordinates = [-1, 0, 1].map(horizonalValue => {
@@ -76,14 +79,14 @@ const getSquareFootprint = (horizonalCoordinate, verticalCoordinate) => {
 
 const checkForOverlap = (footprint) => {
   return footprint.some(cooridinates => {
-    console.log(cooridinates);
+    // console.log(cooridinates);
     if (
       cooridinates[0] < 0 || cooridinates[1] < 0 ||
       cooridinates[0] > 9 || cooridinates[1] > 9
     ) return false;
     return gameBoard[cooridinates[1]][cooridinates[0]].value !== 'sea';
-  })
-}
+  });
+};
 
 const generateShipPosition = (shipInfo) => {
   const range = getStartPointRange(shipInfo);
@@ -116,21 +119,21 @@ const generateShipLocations = () => {
     shipInfo.ship.forEach((part, index) => {
       const verticalPosition = shipInfo.isVertical ? startPointVertical + index : startPointVertical;
       const horizontalPosition = shipInfo.isVertical ? startPointHorizontal : startPointHorizontal + index;
-      console.log('part', part, verticalPosition, horizontalPosition);
+      // console.log('part', part, verticalPosition, horizontalPosition);
 
       gameBoard[verticalPosition] = gameBoard[verticalPosition].map((square, index) => {
         if (index === horizontalPosition) {
-          return { value: part, visable: true };
+          const partName = part === 'middle1' || part === 'middle2' ? 'middle' : part;
+          const visable = shipInfo.visablePart === part;
+          return { value: partName, visable, playerMove: visable ? partName : null };
         } else {
           return square;
         }
       });
-    })
+    });
 
-    // console.log(shipInfo, range, startPointHorizontal, startPointVertical);
-    console.log('gameBoard', gameBoard);
   });
-  console.log(shipsToBePlaced);
+
 };
 
 const clickSquare = ($target, rowNumber, columnNumber) => {
@@ -199,7 +202,7 @@ const setUpGrid = () => {
 };
 
 const checkAnswer = () => {
-
+  console.log(gameBoard)
   const win = Object.values(gameBoard).every((row) => {
     return row.every(square => {
       const noPlayerAnswerButSeaSquare = square.value === 'sea' && !square.playerMove;
@@ -219,8 +222,16 @@ const checkAnswer = () => {
       });
     });
     document.querySelector('.winnerMessage').classList.remove('hidden');
+  } else {
+    console.log('nope!')
   }
 };
+
+const setUpShipKey = () => {
+  // TO DO ADD SHIPS TO KEY
+  // ON CLICK SHOW A CROSS THROUGH THEM
+}
+
 generateShipLocations();
 
 setUpGrid();

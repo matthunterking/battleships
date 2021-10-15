@@ -1,9 +1,40 @@
+.heading {
+ font-family: 'Londrina Solid', cursive;
+ text-transform: uppercase;
+ font-size: 50px;
+ text-align: center;
+}
+.instructionsContainer {
+ display: flex;
+ justify-content: center;
+}
+
+.instructions {
+ text-align: center;
+ font-family: 'Roboto', sans-serif;
+ font-weight: 100;
+ width: 600px;
+}
+
+.gridContainer {
+ display: flex;
+ width: 100%;
+ justify-content: center;
+}
+
 .grid {
  border: 1px solid black;
  width: 600px;
  height: 600px;
  grid-template-columns: repeat(11, 1fr);
  display: grid;
+}
+
+.shipsContianer {
+ width: 200px;
+ height: 600px;
+ border: 1px solid black;
+ margin-left: 20px;
 }
 
 .square {
