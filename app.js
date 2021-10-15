@@ -63,25 +63,55 @@ const generateRandomPoint = (maximum) => {
   return Math.floor(Math.random() * (maximum - 0 + 1) + 0);
 }
 
-const checkSquareIsAvailable = (horizonalCoordinate, verticalCoordinate) => {
-  //TO DO
+const getSquareFootprint = (horizonalCoordinate, verticalCoordinate) => {
+  const coordinates = [-1, 0, 1].map(horizonalValue => {
+    return [
+      [horizonalCoordinate + horizonalValue, verticalCoordinate - 1],
+      [horizonalCoordinate + horizonalValue, verticalCoordinate],
+      [horizonalCoordinate + horizonalValue, verticalCoordinate + 1]
+    ];
+  });
+  return coordinates.flat();
+};
+
+const checkForOverlap = (footprint) => {
+  return footprint.some(cooridinates => {
+    console.log(cooridinates);
+    if (
+      cooridinates[0] < 0 || cooridinates[1] < 0 ||
+      cooridinates[0] > 9 || cooridinates[1] > 9
+    ) return false;
+    return gameBoard[cooridinates[1]][cooridinates[0]].value !== 'sea';
+  })
 }
 
-const getStartPoint = (range, shipInfo) => {
+const generateShipPosition = (shipInfo) => {
+  const range = getStartPointRange(shipInfo);
+
   const startPointHorizontal = generateRandomPoint(range.horizonalMax);
   const startPointVertical = generateRandomPoint(range.verticalMax);
-}
+
+  const shipFootprint = shipInfo.ship.map((part, index) => {
+    const verticalPosition = shipInfo.isVertical ? startPointVertical + index : startPointVertical;
+    const horizontalPosition = shipInfo.isVertical ? startPointHorizontal : startPointHorizontal + index;
+    return getSquareFootprint(horizontalPosition, verticalPosition);
+  }).flat();
+
+  const hasOverLap = checkForOverlap(shipFootprint);
+
+  if (hasOverLap) {
+    console.log('has an overlap');
+    return generateShipPosition(shipInfo);
+  } else {
+    return { startPointHorizontal, startPointVertical };
+  }
+
+};
 
 const generateShipLocations = () => {
   const shipsToBePlaced = generateShipsToBePlaced();
   shipsToBePlaced.forEach(shipInfo => {
-    const range = getStartPointRange(shipInfo);
-
-    const startPointHorizontal = Math.floor(Math.random() * (range.horizonalMax - 0 + 1) + 0);
-    const startPointVertical = Math.floor(Math.random() * (range.verticalMax - 0 + 1) + 0);
-    console.log('shipInfo', shipInfo);
-
-    // check if points are available
+    const { startPointVertical, startPointHorizontal } = generateShipPosition(shipInfo);
 
     shipInfo.ship.forEach((part, index) => {
       const verticalPosition = shipInfo.isVertical ? startPointVertical + index : startPointVertical;
@@ -97,7 +127,7 @@ const generateShipLocations = () => {
       });
     })
 
-    console.log(shipInfo, range, startPointHorizontal, startPointVertical);
+    // console.log(shipInfo, range, startPointHorizontal, startPointVertical);
     console.log('gameBoard', gameBoard);
   });
   console.log(shipsToBePlaced);
