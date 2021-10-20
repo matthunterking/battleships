@@ -11,12 +11,10 @@ const gameBoard = {
   9: [{ value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }]
 };
 
-const squareOptions = ['sea', 'right', 'left', 'up', 'down', 'middle', 'circle', 'flag'];
-
-
-
+const squareOptions = ['sea', 'right', 'left', 'up', 'down', 'middle', 'circle', 'flag', 'blank'];
 
 const $grid = document.querySelector('.grid');
+const $shipLegend = document.querySelector('.shipLegend');
 
 const ships = [
   ['end', 'middle1', 'middle2', 'end'],
@@ -228,11 +226,50 @@ const checkAnswer = () => {
 };
 
 const setUpShipKey = () => {
-  // TO DO ADD SHIPS TO KEY
-  // ON CLICK SHOW A CROSS THROUGH THEM
-}
+  ships.forEach(shipParts => {
+    const $shipContainer = document.createElement('div');
+    const $ship = document.createElement('div');
+    const $cross = document.createElement('div');
+    $ship.classList.add('ship');
+    $shipContainer.classList.add('shipContainer');
+    $cross.classList.add('cross', 'noCross');
+
+    $cross.addEventListener('click', ({ target }) => {
+      console.log('click@@@');
+      if (target.classList.contains('noCross')) {
+        target.classList.remove('noCross');
+      } else {
+        target.classList.add('noCross');
+      }
+    });
+
+    shipParts.forEach((partName, index) => {
+      const $square = document.createElement('div');
+      $square.classList.add('square');
+      let className = partName;
+      if (partName === 'end') {
+        className = index === 0 ? 'left' : 'right';
+      }
+      if (partName === 'middle1' || partName === 'middle2') {
+        className = 'middle';
+      }
+      $square.classList.add(className);
+      $ship.append($square);
+    });
+
+    $ship.setAttribute('style', `
+    grid-template-columns: repeat(${shipParts.length}, 1fr);
+    width: ${(shipParts.length / 4) * 100}%;
+    `);
+
+    $shipContainer.append($ship);
+    $shipContainer.append($cross);
+    $shipLegend.append($shipContainer);
+  });
+};
 
 generateShipLocations();
 
 setUpGrid();
+setUpShipKey();
 

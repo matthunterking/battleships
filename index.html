@@ -2,36 +2,38 @@
 <html>
 
 <head>
- <meta charset="utf-8">
- <meta http-equiv="X-UA-Compatible" content="IE=edge">
- <title></title>
- <meta name="description" content="">
- <meta name="viewport" content="width=device-width, initial-scale=1">
- <link rel="preconnect" href="https://fonts.googleapis.com">
- <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
- <link href="https://fonts.googleapis.com/css2?family=Londrina+Solid:wght@900&display=swap" rel="stylesheet">
- <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;400&display=swap" rel="stylesheet">
- <link rel="stylesheet" href="./style.css">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title></title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Londrina+Solid:wght@900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./style.css">
 </head>
 
 <body>
- <h1 class="heading">Battleships</h1>
- <div class="instructionsContainer">
-  <p class='instructions'><strong>How to play </strong>Locate the postion of each of the ships listed below in the grid.
-   Numbers around the edge tell you the number of ship segments in each row and column of the puzzle. Ships are
-   surrounded on all sides by water, including diagonally.</p>
- </div>
- <div class="gridContainer">
-  <div class='grid'></div>
-  <div class='shipsContianer'></div>
- </div>
- <button>CHECK ANSWER</button>
- <div class='winnerMessage hidden'>
-  <div class='innerWinnerMessage'>
-   <p>Congratulations you have won</p>
+  <h1 class="heading">Battleships</h1>
+  <div class="instructionsContainer">
+    <p class='instructions'><strong>How to play </strong>Locate the postion of each of the ships listed below in the
+      grid.
+      Numbers around the edge tell you the number of ship segments in each row and column of the puzzle. Ships are
+      surrounded on all sides by water, including diagonally.</p>
   </div>
- </div>
- <script src='./app.js'></script>
+  <div class="gridContainer">
+    <div class='grid'></div>
+    <div class='shipLegend'>
+    </div>
+  </div>
+  <button>CHECK ANSWER</button>
+  <div class='winnerMessage hidden'>
+    <div class='innerWinnerMessage'>
+      <p>Congratulations you have won</p>
+    </div>
+  </div>
+  <script src='./app.js'></script>
 </body>
 
 </html>

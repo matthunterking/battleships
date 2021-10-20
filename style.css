@@ -32,11 +32,12 @@
  display: grid;
 }
 
-.shipsContianer {
+.shipLegend {
  width: 200px;
  height: 600px;
  border: 1px solid black;
  margin-left: 20px;
+ display: grid;
 }
 
 .square {
@@ -110,10 +111,75 @@
  display: none;
 }
 
+.shipContainer {
+  height: 60px;
+  position: relative;
+}
+
+.ship {
+  display: grid;
+  grid-auto-flow: column;
+  height: 100%;
+  margin: 0 auto;
+}
+
+.ship > .square {
+  border-style: none;
+}
+
+.cross {
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  position: absolute;
+  top: 0;
+}
+
+.cross::before, .cross::after {
+  content: '';
+  width: 90%;
+  background-color: red;
+  position: absolute;
+  height: 3px;
+  transform-origin: center;
+  top: 40%;
+  left: 5%;
+}
+
+.cross::before {
+  transform: rotate(10deg);
+}
+
+.cross::after {
+  transform: rotate(-10deg);
+}
+
+.noCross.cross::before, .noCross.cross::after {
+  background-color: transparent;
+}
+
 
 @media only screen and (max-width: 600px) {
   .gridContainer {
     flex-direction: column;
+  }
+
+  .instructionsContainer {
+    display: none;
+  }
+
+  .shipLegend {
+    width: 100%;
+    height: auto;
+    border: none;
+    margin-left: 0px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+  }
+
+  .cross {
+    padding-top: 10px;
   }
 
   .grid {
