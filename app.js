@@ -1,15 +1,19 @@
-const gameBoard = {
-  0: [{ value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }],
-  1: [{ value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }],
-  2: [{ value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }],
-  3: [{ value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }],
-  4: [{ value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }],
-  5: [{ value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }],
-  6: [{ value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }],
-  7: [{ value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }],
-  8: [{ value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }],
-  9: [{ value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }, { value: 'sea', visable: false }]
+const generateGameBoard = () => {
+  return {
+    0: new Array(10).fill({ value: 'sea', visable: false }),
+    1: new Array(10).fill({ value: 'sea', visable: false }),
+    2: new Array(10).fill({ value: 'sea', visable: false }),
+    3: new Array(10).fill({ value: 'sea', visable: false }),
+    4: new Array(10).fill({ value: 'sea', visable: false }),
+    5: new Array(10).fill({ value: 'sea', visable: false }),
+    6: new Array(10).fill({ value: 'sea', visable: false }),
+    7: new Array(10).fill({ value: 'sea', visable: false }),
+    8: new Array(10).fill({ value: 'sea', visable: false }),
+    9: new Array(10).fill({ value: 'sea', visable: false })
+  };
 };
+
+let gameBoard;
 
 const squareOptions = ['sea', 'right', 'left', 'up', 'down', 'middle', 'circle', 'flag', 'blank'];
 
@@ -123,6 +127,7 @@ const generateShipLocations = () => {
         if (index === horizontalPosition) {
           const partName = part === 'middle1' || part === 'middle2' ? 'middle' : part;
           const visable = shipInfo.visablePart === part;
+          // const visable = true;
           return { value: partName, visable, playerMove: visable ? partName : null };
         } else {
           return square;
@@ -195,8 +200,43 @@ const setUpGrid = () => {
     $grid.append($square);
   });
 
-  document.querySelector('button').addEventListener('click', checkAnswer);
+  document.querySelector('.checkAnswer').innerText = 'CHECK ANSWER';
+  document.querySelector('.checkAnswer').removeEventListener('click', setUpGame);
+  document.querySelector('.checkAnswer').addEventListener('click', checkAnswer);
+  document.querySelector('.playAgain').addEventListener('click', setUpGame);
+  document.querySelector('.continue').addEventListener('click', closeMessage);
+  document.querySelector('.showAnswer').addEventListener('click', showAnswer);
 
+};
+
+const closeMessage = () => {
+  document.querySelector('.endGameMessage').classList.add('hidden');
+};
+
+const showAnswer = () => {
+  const wrongAnswers = Object.values(gameBoard).reduce((wrongAnswers, row, rowIndex) => {
+    const wrongRowAnswers = row.reduce((rowWrong, square, columnIndex) => {
+      if ((square.value !== 'sea' && square.playerMove !== square.value) ||
+        (square.value === 'sea' && square.playerMove && square.playerMove !== square.value)
+      ) {
+        rowWrong = [...rowWrong, [rowIndex, columnIndex]];
+      }
+      return rowWrong;
+    }, []);
+    wrongAnswers = [...wrongAnswers, ...wrongRowAnswers];
+    return wrongAnswers;
+  }, []);
+
+  wrongAnswers.forEach(coordinates => {
+    const $squareToAmend = document.getElementById(`${coordinates[0]}, ${coordinates[1]}`);
+    const { value, playerMove } = gameBoard[coordinates[0]][coordinates[1]];
+    $squareToAmend.classList.remove(playerMove);
+    $squareToAmend.classList.add('highlight', value);
+  });
+
+  closeMessage();
+  document.querySelector('.checkAnswer').innerText = 'NEW GAME';
+  document.querySelector('.checkAnswer').addEventListener('click', setUpGame);
 };
 
 const checkAnswer = () => {
@@ -209,6 +249,7 @@ const checkAnswer = () => {
     });
   });
 
+  document.querySelector('.endGameMessage').classList.remove('hidden');
   if (win) {
     Object.keys(gameBoard).forEach(rowNumber => {
       gameBoard[rowNumber] = gameBoard[rowNumber].map((square, columnNumber) => {
@@ -219,9 +260,9 @@ const checkAnswer = () => {
         return square;
       });
     });
-    document.querySelector('.winnerMessage').classList.remove('hidden');
+    document.querySelector('.innerWinnerMessage').classList.remove('hidden');
   } else {
-    console.log('nope!');
+    document.querySelector('.innerLoserMessage').classList.remove('hidden');
   }
 };
 
@@ -268,8 +309,15 @@ const setUpShipKey = () => {
   });
 };
 
-generateShipLocations();
+const setUpGame = () => {
+  $grid.innerText = '';
+  document.querySelector('.endGameMessage').classList.add('hidden');
+  document.querySelector('.endGameMessage').classList.add('hidden');
+  gameBoard = generateGameBoard();
+  generateShipLocations();
+  setUpGrid();
+};
 
-setUpGrid();
 setUpShipKey();
+setUpGame();
 

@@ -27,10 +27,18 @@
     <div class='shipLegend'>
     </div>
   </div>
-  <button>CHECK ANSWER</button>
-  <div class='winnerMessage hidden'>
-    <div class='innerWinnerMessage'>
+  <button class='genericButton checkAnswer'>CHECK ANSWER</button>
+  <div class='endGameMessage hidden'>
+    <div class='innerWinnerMessage hidden'>
       <p>Congratulations you have won</p>
+      <button class='genericButton playAgain'>PLAY AGAIN</button>
+    </div>
+    <div class='innerLoserMessage hidden'>
+      <p>Sorry something is not correct</p>
+      <div>
+        <button class='genericButton continue'>KEEP TRYING</button>
+        <button class='genericButton showAnswer'>SHOW ANSWER</button>
+      </div>
     </div>
   </div>
   <script src='./app.js'></script>

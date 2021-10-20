@@ -22,6 +22,7 @@
  display: flex;
  width: 100%;
  justify-content: center;
+ align-items: center;
 }
 
 .grid {
@@ -30,6 +31,7 @@
  height: 600px;
  grid-template-columns: repeat(11, 1fr);
  display: grid;
+ font-family: 'Londrina Solid', cursive;
 }
 
 .shipLegend {
@@ -90,7 +92,7 @@
  background-size: cover;
 }
 
-.winnerMessage {
+.endGameMessage {
  position: absolute;
  left: 0;
  top: 0;
@@ -100,11 +102,14 @@
  padding: 25%;
 }
 
-.innerWinnerMessage {
- background-color: white;
- display: flex;
- justify-content: center;
- align-items: center;
+.innerWinnerMessage, .innerLoserMessage {
+  background-color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50vh;
+  flex-direction: column;
+  font-family: 'Roboto', sans-serif;
 }
 
 .hidden {
@@ -158,8 +163,30 @@
   background-color: transparent;
 }
 
+.genericButton {
+    margin: 5px auto;
+    display: block;
+    border: 1px solid black;
+    padding: 0 60px;
+    background-color: transparent;
+    font-family: 'Londrina Solid', cursive;
+    text-transform: uppercase;
+    font-size: 30px;
+}
+
+.highlight {
+  background-color: gold;
+}
+
+.answer::after {
+  border-color: lime;
+}
 
 @media only screen and (max-width: 600px) {
+  .heading {
+    font-size: 30px;
+  }
+  
   .gridContainer {
     flex-direction: column;
   }
@@ -169,7 +196,7 @@
   }
 
   .shipLegend {
-    width: 100%;
+    width: 300px;
     height: auto;
     border: none;
     margin-left: 0px;
