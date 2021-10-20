@@ -223,7 +223,7 @@ const checkAnswer = () => {
     });
     document.querySelector('.winnerMessage').classList.remove('hidden');
   } else {
-    console.log('nope!')
+    console.log('nope!');
   }
 };
 

@@ -3,6 +3,7 @@
  text-transform: uppercase;
  font-size: 50px;
  text-align: center;
+ margin: 0;
 }
 .instructionsContainer {
  display: flex;
@@ -14,6 +15,7 @@
  font-family: 'Roboto', sans-serif;
  font-weight: 100;
  width: 600px;
+ margin: 5px;
 }
 
 .gridContainer {
@@ -106,4 +108,26 @@
 
 .hidden {
  display: none;
+}
+
+
+@media only screen and (max-width: 600px) {
+  .gridContainer {
+    flex-direction: column;
+  }
+
+  .grid {
+   width: 300px;
+   height: 300px;
+  }
+
+  .right::after, .left::after, .up::after, .down::after {
+   border-top: 7px solid transparent;
+   border-bottom: 7px solid transparent;
+   border-right: 15px solid #182b32;
+  }
+ .middle::after, .circle::after {
+  width: 15px;
+  height: 15px;
+ }
 }
