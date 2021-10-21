@@ -1,16 +1,8 @@
 const generateGameBoard = () => {
-  return {
-    0: new Array(10).fill({ value: 'sea', visable: false }),
-    1: new Array(10).fill({ value: 'sea', visable: false }),
-    2: new Array(10).fill({ value: 'sea', visable: false }),
-    3: new Array(10).fill({ value: 'sea', visable: false }),
-    4: new Array(10).fill({ value: 'sea', visable: false }),
-    5: new Array(10).fill({ value: 'sea', visable: false }),
-    6: new Array(10).fill({ value: 'sea', visable: false }),
-    7: new Array(10).fill({ value: 'sea', visable: false }),
-    8: new Array(10).fill({ value: 'sea', visable: false }),
-    9: new Array(10).fill({ value: 'sea', visable: false })
-  };
+  return new Array(10).fill('').reduce((gameBoard, value, index) => {
+    gameBoard[index] = new Array(10).fill({ value: 'sea', visable: false });
+    return gameBoard;
+  }, {});
 };
 
 let gameBoard;
@@ -240,7 +232,7 @@ const showAnswer = () => {
 };
 
 const checkAnswer = () => {
-  console.log(gameBoard)
+  console.log(gameBoard);
   const win = Object.values(gameBoard).every((row) => {
     return row.every(square => {
       const noPlayerAnswerButSeaSquare = square.value === 'sea' && !square.playerMove;
