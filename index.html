@@ -17,7 +17,7 @@
 <body>
   <h1 class="heading">Battleships</h1>
   <div class="instructionsContainer">
-    <p class='instructions'><strong>How to play </strong>Locate the postion of each of the ships listed below in the
+    <p class='instructions'><strong>How to play </strong>Locate the position of each of the ships listed below in the
       grid.
       Numbers around the edge tell you the number of ship segments in each row and column of the puzzle. Ships are
       surrounded on all sides by water, including diagonally.</p>
@@ -27,7 +27,9 @@
     <div class='shipLegend'>
     </div>
   </div>
-  <button class='genericButton checkAnswer'>CHECK ANSWER</button>
+  <div class='checkAnswerContainer'>
+    <button class='genericButton checkAnswer'>CHECK ANSWER</button>
+  </div>
   <div class='endGameMessage hidden'>
     <div class='innerWinnerMessage hidden'>
       <p>Congratulations you have won</p>
@@ -35,7 +37,7 @@
     </div>
     <div class='innerLoserMessage hidden'>
       <p>Sorry something is not correct</p>
-      <div>
+      <div class='loserControls'>
         <button class='genericButton continue'>KEEP TRYING</button>
         <button class='genericButton showAnswer'>SHOW ANSWER</button>
       </div>

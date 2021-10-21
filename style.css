@@ -26,27 +26,29 @@
 }
 
 .grid {
- border: 1px solid black;
+ border: 1px solid #182b32;
  width: 600px;
  height: 600px;
  grid-template-columns: repeat(11, 1fr);
  display: grid;
  font-family: 'Londrina Solid', cursive;
+ background-color: #182b32;
 }
 
 .shipLegend {
  width: 200px;
  height: 600px;
- border: 1px solid black;
+ border: 1px solid #182b32;
  margin-left: 20px;
  display: grid;
 }
 
 .square {
- border: 1px solid black;
+ border: 1px solid #182b32;
  display: flex;
  justify-content: center;
  align-items: center;
+ background-color: white;
 }
 
 .sea {
@@ -93,23 +95,36 @@
 }
 
 .endGameMessage {
- position: absolute;
+ position: fixed;
  left: 0;
  top: 0;
  right: 0;
  bottom: 0;
  background-color: rgba(0, 0, 0, 0.4);
- padding: 25%;
+ display: flex;
+ justify-content: center;
+ align-items: center;
+ z-index: 2;
 }
 
 .innerWinnerMessage, .innerLoserMessage {
   background-color: white;
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
-  height: 50vh;
   flex-direction: column;
   font-family: 'Roboto', sans-serif;
+  padding: 20px;
+}
+
+.loserControls {
+  display: flex;
+  flex-direction: column;
+}
+
+.checkAnswerContainer {
+  display: flex;
+  justify-content: center;
 }
 
 .hidden {
@@ -143,7 +158,7 @@
 .cross::before, .cross::after {
   content: '';
   width: 90%;
-  background-color: red;
+  background-color: #dc143c;
   position: absolute;
   height: 3px;
   transform-origin: center;
@@ -164,9 +179,9 @@
 }
 
 .genericButton {
-    margin: 5px auto;
+    margin: 5px 0;
     display: block;
-    border: 1px solid black;
+    border: 1px solid #182b32;
     padding: 0 60px;
     background-color: transparent;
     font-family: 'Londrina Solid', cursive;
@@ -175,11 +190,7 @@
 }
 
 .highlight {
-  background-color: gold;
-}
-
-.answer::after {
-  border-color: lime;
+  background-color: #D4AF37;
 }
 
 @media only screen and (max-width: 600px) {
