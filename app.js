@@ -304,6 +304,7 @@ const setUpGame = () => {
   $grid.innerText = '';
   $endGameMessage.classList.add('hidden');
   $endGameMessage.classList.add('hidden');
+  document.querySelectorAll('.cross').forEach($cross => $cross.classList.add('noCross'));
   gameBoard = generateGameBoard();
   generateShipLocations();
   setUpGrid();
