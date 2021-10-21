@@ -233,6 +233,7 @@ const setUpGrid = () => {
 
 const closeMessage = () => {
   $endGameMessage.classList.add('hidden');
+  $innerLoserMessage.classList.add('hidden');
 };
 
 const showAnswer = () => {
