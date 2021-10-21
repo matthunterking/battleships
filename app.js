@@ -1,17 +1,4 @@
-const generateGameBoard = () => {
-  return new Array(10).fill('').reduce((gameBoard, value, index) => {
-    gameBoard[index] = new Array(10).fill({ value: 'sea', visable: false });
-    return gameBoard;
-  }, {});
-};
-
 let gameBoard;
-
-const squareOptions = ['sea', 'right', 'left', 'up', 'down', 'middle', 'circle', 'flag', 'blank'];
-
-const $grid = document.querySelector('.grid');
-const $shipLegend = document.querySelector('.shipLegend');
-
 const ships = [
   ['end', 'middle1', 'middle2', 'end'],
   ['end', 'middle', 'end'],
@@ -24,6 +11,24 @@ const ships = [
   ['circle'],
   ['circle']
 ];
+const squareOptions = ['sea', 'right', 'left', 'up', 'down', 'middle', 'circle', 'flag', 'blank'];
+
+const $grid = document.querySelector('.grid');
+const $shipLegend = document.querySelector('.shipLegend');
+const $checkAnswerButton = document.querySelector('.checkAnswer');
+const $playAgainButton = document.querySelector('.playAgain');
+const $continueButton = document.querySelector('.continue');
+const $showAnswerButton = document.querySelector('.showAnswer');
+const $endGameMessage = document.querySelector('.endGameMessage');
+const $innerWinnerMessage = document.querySelector('.innerWinnerMessage');
+const $innerLoserMessage = document.querySelector('.innerLoserMessage');
+
+const generateGameBoard = () => {
+  return new Array(10).fill('').reduce((gameBoard, value, index) => {
+    gameBoard[index] = new Array(10).fill({ value: 'sea', visable: false });
+    return gameBoard;
+  }, {});
+};
 
 const generateShipsToBePlaced = () => {
   let isVertical = false;
@@ -73,7 +78,6 @@ const getSquareFootprint = (horizonalCoordinate, verticalCoordinate) => {
 
 const checkForOverlap = (footprint) => {
   return footprint.some(cooridinates => {
-    // console.log(cooridinates);
     if (
       cooridinates[0] < 0 || cooridinates[1] < 0 ||
       cooridinates[0] > 9 || cooridinates[1] > 9
@@ -97,7 +101,6 @@ const generateShipPosition = (shipInfo) => {
   const hasOverLap = checkForOverlap(shipFootprint);
 
   if (hasOverLap) {
-    console.log('has an overlap');
     return generateShipPosition(shipInfo);
   } else {
     return { startPointHorizontal, startPointVertical };
@@ -113,7 +116,6 @@ const generateShipLocations = () => {
     shipInfo.ship.forEach((part, index) => {
       const verticalPosition = shipInfo.isVertical ? startPointVertical + index : startPointVertical;
       const horizontalPosition = shipInfo.isVertical ? startPointHorizontal : startPointHorizontal + index;
-      // console.log('part', part, verticalPosition, horizontalPosition);
 
       gameBoard[verticalPosition] = gameBoard[verticalPosition].map((square, index) => {
         if (index === horizontalPosition) {
@@ -143,7 +145,6 @@ const clickSquare = ($target, rowNumber, columnNumber) => {
     return square;
   });
 
-  console.log(gameBoard);
   $target.classList.remove(previousSquareValue);
   $target.classList.add(newSquareValue);
 
@@ -192,17 +193,16 @@ const setUpGrid = () => {
     $grid.append($square);
   });
 
-  document.querySelector('.checkAnswer').innerText = 'CHECK ANSWER';
-  document.querySelector('.checkAnswer').removeEventListener('click', setUpGame);
-  document.querySelector('.checkAnswer').addEventListener('click', checkAnswer);
-  document.querySelector('.playAgain').addEventListener('click', setUpGame);
-  document.querySelector('.continue').addEventListener('click', closeMessage);
-  document.querySelector('.showAnswer').addEventListener('click', showAnswer);
-
+  $checkAnswerButton.innerText = 'CHECK ANSWER';
+  $checkAnswerButton.removeEventListener('click', setUpGame);
+  $checkAnswerButton.addEventListener('click', checkAnswer);
+  $playAgainButton.addEventListener('click', setUpGame);
+  $continueButton.addEventListener('click', closeMessage);
+  $showAnswerButton.addEventListener('click', showAnswer);
 };
 
 const closeMessage = () => {
-  document.querySelector('.endGameMessage').classList.add('hidden');
+  $endGameMessage.classList.add('hidden');
 };
 
 const showAnswer = () => {
@@ -227,12 +227,11 @@ const showAnswer = () => {
   });
 
   closeMessage();
-  document.querySelector('.checkAnswer').innerText = 'NEW GAME';
-  document.querySelector('.checkAnswer').addEventListener('click', setUpGame);
+  $checkAnswerButton.innerText = 'NEW GAME';
+  $checkAnswerButton.addEventListener('click', setUpGame);
 };
 
 const checkAnswer = () => {
-  console.log(gameBoard);
   const win = Object.values(gameBoard).every((row) => {
     return row.every(square => {
       const noPlayerAnswerButSeaSquare = square.value === 'sea' && !square.playerMove;
@@ -241,7 +240,8 @@ const checkAnswer = () => {
     });
   });
 
-  document.querySelector('.endGameMessage').classList.remove('hidden');
+  $endGameMessage.classList.remove('hidden');
+
   if (win) {
     Object.keys(gameBoard).forEach(rowNumber => {
       gameBoard[rowNumber] = gameBoard[rowNumber].map((square, columnNumber) => {
@@ -252,9 +252,9 @@ const checkAnswer = () => {
         return square;
       });
     });
-    document.querySelector('.innerWinnerMessage').classList.remove('hidden');
+    $innerWinnerMessage.classList.remove('hidden');
   } else {
-    document.querySelector('.innerLoserMessage').classList.remove('hidden');
+    $innerLoserMessage.classList.remove('hidden');
   }
 };
 
@@ -268,7 +268,6 @@ const setUpShipKey = () => {
     $cross.classList.add('cross', 'noCross');
 
     $cross.addEventListener('click', ({ target }) => {
-      console.log('click@@@');
       if (target.classList.contains('noCross')) {
         target.classList.remove('noCross');
       } else {
@@ -303,8 +302,8 @@ const setUpShipKey = () => {
 
 const setUpGame = () => {
   $grid.innerText = '';
-  document.querySelector('.endGameMessage').classList.add('hidden');
-  document.querySelector('.endGameMessage').classList.add('hidden');
+  $endGameMessage.classList.add('hidden');
+  $endGameMessage.classList.add('hidden');
   gameBoard = generateGameBoard();
   generateShipLocations();
   setUpGrid();
