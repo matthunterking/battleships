@@ -11,7 +11,7 @@ const ships = [
   ['circle'],
   ['circle']
 ];
-const squareOptions = ['sea', 'right', 'left', 'up', 'down', 'middle', 'circle', 'flag', 'blank'];
+const squareOptions = ['sea', 'right', 'left', 'up', 'down', 'middle', 'circle', 'blank'];
 
 const $grid = document.querySelector('.grid');
 const $shipLegend = document.querySelector('.shipLegend');
@@ -25,7 +25,7 @@ const $innerLoserMessage = document.querySelector('.innerLoserMessage');
 
 const generateGameBoard = () => {
   return new Array(10).fill('').reduce((gameBoard, value, index) => {
-    gameBoard[index] = new Array(10).fill({ value: 'sea', visable: false });
+    gameBoard[index] = new Array(10).fill({ value: 'sea', visible: false });
     return gameBoard;
   }, {});
 };
@@ -46,11 +46,11 @@ const generateShipsToBePlaced = () => {
         return shipPart;
       });
     }
-    let visablePart = null;
+    let visiblePart = null;
     if (Math.random() > 0.3) {
-      visablePart = shipMakeUp[Math.floor(Math.random() * shipMakeUp.length)];
+      visiblePart = shipMakeUp[Math.floor(Math.random() * shipMakeUp.length)];
     }
-    return { isVertical, ship: shipMakeUp, visablePart };
+    return { isVertical, ship: shipMakeUp, visiblePart };
   });
 };
 
@@ -120,9 +120,9 @@ const generateShipLocations = () => {
       gameBoard[verticalPosition] = gameBoard[verticalPosition].map((square, index) => {
         if (index === horizontalPosition) {
           const partName = part === 'middle1' || part === 'middle2' ? 'middle' : part;
-          const visable = shipInfo.visablePart === part;
-          // const visable = true;
-          return { value: partName, visable, playerMove: visable ? partName : null };
+          const visible = shipInfo.visiblePart === part;
+          // const visible = true;
+          return { value: partName, visible, playerMove: visible ? partName : null };
         } else {
           return square;
         }
@@ -133,8 +133,34 @@ const generateShipLocations = () => {
 
 };
 
-const clickSquare = ($target, rowNumber, columnNumber) => {
+const clickSquare = ($target, rowNumber, columnNumber, isRightClick = false) => {
   const previousSquareValue = gameBoard[rowNumber][columnNumber].playerMove;
+
+  if (isRightClick) {
+    if (previousSquareValue !== 'flag') {
+      gameBoard[rowNumber] = gameBoard[rowNumber].map((square, index) => {
+        if (index === columnNumber) {
+          return { ...square, playerMove: 'flag' };
+        }
+        return square;
+      });
+
+      $target.classList.remove(previousSquareValue);
+      return $target.classList.add('flag');
+    } else {
+      gameBoard[rowNumber] = gameBoard[rowNumber].map((square, index) => {
+        if (index === columnNumber) {
+          return { ...square, playerMove: 'blank' };
+        }
+        return square;
+      });
+
+      $target.classList.remove(previousSquareValue);
+      return $target.classList.add('blank');
+    }
+  }
+
+
   const nextOptionIndex = previousSquareValue ? squareOptions.indexOf(previousSquareValue) + 1 : 0;
   const newSquareValue = nextOptionIndex === squareOptions.length ? squareOptions[0] : squareOptions[nextOptionIndex];
 
@@ -145,7 +171,7 @@ const clickSquare = ($target, rowNumber, columnNumber) => {
     return square;
   });
 
-  $target.classList.remove(previousSquareValue);
+  $target.classList.remove(previousSquareValue, 'flag');
   $target.classList.add(newSquareValue);
 
 };
@@ -156,10 +182,14 @@ const setUpGrid = () => {
       const $square = document.createElement('div');
       $square.setAttribute('id', `${rowNumber}, ${columnNumber}`);
       $square.classList.add('square');
-      if (square.visable) {
+      if (square.visible) {
         $square.classList.add(square.value);
       } else {
         $square.addEventListener('click', ({ target }) => clickSquare(target, rowNumber, columnNumber));
+        $square.addEventListener('contextmenu', (e) => {
+          e.preventDefault();
+          clickSquare(e.target, rowNumber, columnNumber, true);
+        });
       }
       $grid.append($square);
     });
@@ -209,7 +239,7 @@ const showAnswer = () => {
   const wrongAnswers = Object.values(gameBoard).reduce((wrongAnswers, row, rowIndex) => {
     const wrongRowAnswers = row.reduce((rowWrong, square, columnIndex) => {
       if ((square.value !== 'sea' && square.playerMove !== square.value) ||
-        (square.value === 'sea' && square.playerMove && square.playerMove !== square.value)
+        (square.value === 'sea' && square.playerMove && square.playerMove !== square.value && square.playerMove !== 'flag')
       ) {
         rowWrong = [...rowWrong, [rowIndex, columnIndex]];
       }
@@ -235,8 +265,9 @@ const checkAnswer = () => {
   const win = Object.values(gameBoard).every((row) => {
     return row.every(square => {
       const noPlayerAnswerButSeaSquare = square.value === 'sea' && !square.playerMove;
+      const flagButAnswerIsSea = square.value === 'sea' && square.playerMove === 'flag';
       const correct = square.value === square.playerMove;
-      return noPlayerAnswerButSeaSquare || correct;
+      return noPlayerAnswerButSeaSquare || flagButAnswerIsSea || correct;
     });
   });
 
