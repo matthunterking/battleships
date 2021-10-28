@@ -335,7 +335,8 @@ const setUpShipKey = () => {
 const setUpGame = () => {
   $grid.innerText = '';
   $endGameMessage.classList.add('hidden');
-  $endGameMessage.classList.add('hidden');
+  $innerWinnerMessage.classList.add('hidden');
+  $innerLoserMessage.classList.add('hidden');
   document.querySelectorAll('.cross').forEach($cross => $cross.classList.add('noCross'));
   gameBoard = generateGameBoard();
   generateShipLocations();
